@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"path": "pages/bot/bot",
+			"style": {
+				"navigationBarTitleText": "智能助手",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path" : "pages/hand-up/hand-up",
 			"style" : 
 			{
@@ -70,7 +77,14 @@
 				"navigationBarTitleText" : "个人信息",
 				"navigationStyle": "custom"
 			}
-		}
+		},
+		// {
+		// 	"path" : "pages/bot/bot/bot",
+		// 	"style" : 
+		// 	{
+		// 		"navigationBarTitleText" : ""
+		// 	}
+		// }
 		
 		
 	],
@@ -85,6 +99,12 @@
 			{
 				"text": "首页",
 			     "pagePath": "pages/index/index",
+				 "iconPath": "common/images/index2.png",
+				 "selectedIconPath": "common/images/index.png"
+			},
+			{
+				"text": "智能助手",
+			     "pagePath": "pages/bot/bot",
 				 "iconPath": "common/images/index2.png",
 				 "selectedIconPath": "common/images/index.png"
 			},

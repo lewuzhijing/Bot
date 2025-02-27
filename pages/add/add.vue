@@ -56,7 +56,7 @@
 	<uni-popup ref="message" type="message" class="popup">
 		<uni-popup-message :type="msgType" :message="messageText" :duration="2000" class="popup-message-center"></uni-popup-message>
 	</uni-popup>
-		
+		<view style="width: 100vw;height: 20vh;background-color: pink;"></view>
   </view>
   
 </template>
