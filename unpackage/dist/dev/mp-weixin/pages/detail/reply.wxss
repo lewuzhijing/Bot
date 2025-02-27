@@ -1,0 +1,35 @@
+.replyOut .body.data-v-4009e719 {
+  padding: 30rpx 0;
+  border-bottom: 12rpx solid #f7f7f7;
+}
+.replyOut .list .row.data-v-4009e719 {
+  border-bottom: 1px solid #f7f7f7;
+}
+.commentPopup.data-v-4009e719 {
+  background: #ffffff;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.commentPopup .ipt.data-v-4009e719 {
+  background: #f8f8f8;
+  height: 70rpx;
+  flex: 1;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  border-radius: 10rpx;
+}
+.commentPopup .button.data-v-4009e719 {
+  width: 70rpx;
+  height: 70rpx;
+  margin-left: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.safeBottom.data-v-4009e719 {
+  height: 40rpx;
+  background: #ffffff;
+}

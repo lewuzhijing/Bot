@@ -1,0 +1,40 @@
+.layout .navbar.data-v-412fc155 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: linear-gradient(to bottom, transparent, #fff 400rpx), linear-gradient(to right, #CCffff 20%, #f4e2d8);
+}
+.layout .navbar .titleBar.data-v-412fc155 {
+  display: flex;
+  padding: 0 30rpx;
+  align-items: center;
+}
+.layout .navbar .titleBar .title.data-v-412fc155 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-left: 10rpx;
+  color: #000;
+}
+.layout .navbar .titleBar .seacher.data-v-412fc155 {
+  width: 220rpx;
+  height: 50rpx;
+  border-radius: 60rpx;
+  background-color: rgba(255, 255, 255);
+  border: 1px solid #fff;
+  margin-left: 30rpx;
+  color: #999;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+}
+.layout .navbar .titleBar .seacher .icon.data-v-412fc155 {
+  margin-left: 5rpx;
+}
+.layout .navbar .titleBar .seacher .text.data-v-412fc155 {
+  margin-left: 5rpx;
+}
+.layout .navbar .titleBar .add.data-v-412fc155 {
+  margin-left: 300rpx;
+}

@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/hand-up/hand-up",
+    "pages/user/user",
+    "pages/login/login",
+    "pages/detail/detail",
+    "pages/add/add",
+    "pages/detail/reply",
+    "pages/search/search",
+    "pages/user/userInfo"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "common/images/index2.png",
+        "selectedIconPath": "common/images/index.png"
+      },
+      {
+        "text": "热点",
+        "pagePath": "pages/hand-up/hand-up",
+        "iconPath": "common/images/handup2.png",
+        "selectedIconPath": "common/images/handup.png"
+      },
+      {
+        "text": "发布",
+        "pagePath": "pages/add/add",
+        "iconPath": "common/images/add.png",
+        "selectedIconPath": "common/images/add.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/user/user",
+        "iconPath": "common/images/user2.png",
+        "selectedIconPath": "common/images/user2.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

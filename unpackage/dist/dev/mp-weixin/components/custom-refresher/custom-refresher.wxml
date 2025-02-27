@@ -1,0 +1,1 @@
+<view class="refresher-container data-v-7a509e9f"><image class="refresher-image data-v-7a509e9f" mode="aspectFit" src="{{a}}"></image><text class="refresher-text data-v-7a509e9f">{{b}}</text></view>

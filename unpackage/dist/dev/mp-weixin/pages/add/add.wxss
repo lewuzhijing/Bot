@@ -1,0 +1,84 @@
+.layout.data-v-e8d2fd40 {
+  height: 700px	;
+  width: 100%;
+  /* 使提示消息居中 */
+}
+.layout .bar.data-v-e8d2fd40 {
+  padding-top: 50px;
+  padding-bottom: 10px;
+  height: 80px;
+  text-align: center;
+  width: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 0.5px solid #cfcfcf;
+}
+.layout .topic.data-v-e8d2fd40 {
+  min-height: 180px;
+  width: 100%;
+  margin-top: 20px;
+  border-bottom: 0.5px solid #cfcfcf;
+}
+.layout .topic .topic-1.data-v-e8d2fd40 {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+.layout .topic .topic-1 .upload.data-v-e8d2fd40 {
+  width: 100px;
+  height: 100px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.layout .topic .add1.data-v-e8d2fd40 {
+  margin: 20px;
+  margin-top: 0px;
+  padding-top: 20px;
+  width: auto;
+  font-size: 33rpx;
+  line-height: 33rpx;
+  font-weight: 500;
+}
+.layout .content .add2.data-v-e8d2fd40 {
+  padding-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  font-weight: 400;
+}
+.layout .button-1.data-v-e8d2fd40 {
+  width: 550rpx;
+  height: 85rpx;
+  background-color: #869eb8;
+  /* 默认灰色 */
+  margin: 360rpx auto;
+  border-radius: 15rpx;
+  box-shadow: 0 0 30rpx rgba(0, 0, 0, 0.08);
+  text-align: center;
+  color: aliceblue;
+  font-size: 30rpx;
+  cursor: not-allowed;
+  /* 不可点击的鼠标样式 */
+}
+.layout .button-1.active.data-v-e8d2fd40 {
+  background-color: #1296db;
+  /* 激活状态为绿色 */
+  cursor: pointer;
+}
+.layout .popup-message-center.data-v-e8d2fd40 {
+  text-align: center;
+  position: relative;
+  top: 100px;
+  margin: 0 auto;
+  max-width: 200px;
+}
+.layout .icon.data-v-e8d2fd40 {
+  position: relative;
+  top: 40px;
+  left: 20px;
+}
