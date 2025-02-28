@@ -1,359 +1,505 @@
-<template>
-	<view class="chat">
-    <!-- 顶部标题 -->
-    <view class="topTabbar">
-      <!-- 返回图标 -->
-      <u-icon class="icon" name="arrow-left" size="20px" color="#000" @click="goback()"></u-icon>
-      <!-- 标题 -->
-      <view class="text">智能助手</view>
-    </view>
-		<scroll-view  :style="{height: `${windowHeight-inputHeight - 180}rpx`}"
-		id="scrollview"
-		scroll-y="true" 
-		:scroll-top="scrollTop"
-		class="scroll-view"
-		>
-			<!-- 聊天主体 -->
-			<view id="msglistview" class="chat-body">
-				<!-- 聊天记录 -->
-				<view v-for="(item,index) in msgList" :key="index">
-					<!-- 自己发的消息 -->
-					<view class="item self" v-if="item.userContent != ''" >
-						<!-- 文字内容 -->
-						<view class="content right">
-						{{item.userContent}}
-						</view>
-						<!-- 头像 -->
-						<image class="avatar" :src="item.image">
-						</image>
-					</view>
-					<!-- 机器人发的消息 -->
-					<view class="item Ai" v-if="item.botContent != ''">
-						<!-- 头像 -->     
-						<image class="avatar" :src="item.image">
-						</image>
-						<!-- 文字内容 -->
-						<view class="content left">
-							{{item.botContent}}
-						</view>
-					</view>
-				</view>
-			</view>
-		</scroll-view>
-		<!-- 底部消息发送栏 -->
-		<!-- 用来占位，防止聊天消息被发送框遮挡 -->
-		<view class="chat-bottom" :style="{height: `${inputHeight-90}rpx`}">
-			<view class="send-msg" :style="{bottom:`${keyboardHeight+40 }rpx`}">
-        <view class="uni-textarea">
-          <textarea v-model="chatMsg"
-            maxlength="300"
-            confirm-type="send"
-            @confirm="handleSend"
-            placeholder="快来聊天吧~"
-            :show-confirm-bar="false"
-            :adjust-position="false"
-            @linechange="sendHeight"
-            @focus="focus" @blur="blur"
-           auto-height></textarea>
-        </view>
-				<button @click="handleSend" class="send-btn">发送</button>
-			</view>
-		</view>
-	</view>
-</template>
-<script>
-	export default{
-		data() {
-			return {
-				//键盘高度
-				keyboardHeight:0,
-				//底部消息发送高度
-				bottomHeight: 0,
-				//滚动距离
-				scrollTop: 0,
-				userId:'',
-				//发送的消息
-				chatMsg:"",
-				msgList:[
-					{
-					    botContent: "你好啊，很高兴你可以关注我，请问我有什么可以帮助你的吗？",
-					    userContent: "",
-						image:"/static/common/unname1.jpeg"
-					},
-					{
-					    botContent: "",
-					    userContent: "你好呀，非常高兴认识你",
-						image:"/static/common/unname2.jpg"
-					},
-					
-				]	
-			}
-		},
-		updated(){
-			//页面更新时调用聊天消息定位到最底部
-			this.scrollToBottom();
-		},
-		computed: {
-			windowHeight() {
-			    return this.rpxTopx(uni.getSystemInfoSync().windowHeight)
-			},
-			// 键盘弹起来的高度+发送框高度
-			inputHeight(){
-				return this.bottomHeight+this.keyboardHeight
-			}
-		},
-		onLoad(){
-        uni.onKeyboardHeightChange(res => {
-				//这里正常来讲代码直接写
-				//this.keyboardHeight=this.rpxTopx(res.height)就行了
-				//但是之前界面ui设计聊天框的高度有点高,为了不让键盘和聊天输入框之间距离差太大所以我改动了一下。
-				this.keyboardHeight = this.rpxTopx(res.height)
-				if(this.keyboardHeight<0)this.keyboardHeight = 0;
-			})
-		},
-		onUnload(){
-			// uni.offKeyboardHeightChange()
-		},
-		methods: {
-      goback() {
-        uni.switchTab({
-          url: "/pages/tutorship/tutorship"
-        })
-      },
-			focus(){
-				this.scrollToBottom()
-			},
-			blur(){
-				this.scrollToBottom()
-			},
-			// px转换成rpx
-			rpxTopx(px){
-				let deviceWidth = uni.getSystemInfoSync().windowWidth
-				let rpx = ( 750 / deviceWidth ) * Number(px)
-				return Math.floor(rpx)
-			},
-			// 监视聊天发送栏高度
-			sendHeight(){
-				setTimeout(()=>{
-					let query = uni.createSelectorQuery();
-					query.select('.send-msg').boundingClientRect()
-					query.exec(res =>{
-						this.bottomHeight = this.rpxTopx(res[0].height)
-					})
-				},10)
-			},
-			// 滚动至聊天底部
-			scrollToBottom(e){
-				setTimeout(()=>{
-					let query = uni.createSelectorQuery().in(this);
-					query.select('#scrollview').boundingClientRect();
-					query.select('#msglistview').boundingClientRect();
-					query.exec((res) =>{
-						if(res[1].height > res[0].height){
-							this.scrollTop = this.rpxTopx(res[1].height - res[0].height)
-						}
-					})
-				},15)
-			},
-			// 发送消息
-			handleSend() {
-				//如果消息不为空
-				if(!this.chatMsg||!/^\s+$/.test(this.chatMsg)){
-					let obj = {
-						botContent: "",
-						userContent: this.chatMsg,
-						image:"/static/common/unname2.jpg"
-					}
-					this.msgList.push(obj);
-					this.chatMsg = '';
-					this.scrollToBottom()
-				}else {
-					this.$modal.showToast('不能发送空白消息')
-				}
-			},
-		}
-	}
-</script>
-<style lang="scss" scoped>
-	
-	$chatContentbgc: #C2DCFF;
-	$sendBtnbgc: #4F7DF5;
-	
-	view,button,text,input,textarea {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
- 
-	/* 聊天消息 */
-	.chat {
-     .topTabbar {
-          width: 100%;
-          height: 90rpx;
-          line-height: 90rpx;
-          display: flex;
-          margin-top: 80rpx;
-          justify-content: space-between;
-      
-          .icon {
-            margin-left: 20rpx;
-          }
-      
-          .text {
-            margin: auto;
-            font-size: 16px;
-            font-weight: 700;
-          }
-      
-          .button {
-            width: 10%;
-            margin: auto 20rpx auto 0rpx;
-          }
-        }
-		.scroll-view {
-			::-webkit-scrollbar {
-					    display: none;
-					    width: 0 !important;
-					    height: 0 !important;
-					    -webkit-appearance: none;
-					    background: transparent;
-					    color: transparent;
-					  }
-			
-			// background-color: orange;
-			background-color: #F6F6F6;
-			
-			.chat-body {
-				display: flex;
-				flex-direction: column;
-				padding-top: 23rpx;
-				// background-color:skyblue;
-				
-				.self {
-					justify-content: flex-end;
-				}
-				.item {
-					display: flex;
-					padding: 23rpx 30rpx;
-					// background-color: greenyellow;
- 
-					.right {
-						background-color: $chatContentbgc;
-					}
-					.left {
-						background-color: #FFFFFF;
-					}
-                    // 聊天消息的三角形
-					.right::after {
-						position: absolute;
-						display: inline-block;
-						content: '';
-						width: 0;
-						height: 0;
-						left: 100%;
-						top: 10px;
-						border: 12rpx solid transparent;
-						border-left: 12rpx solid $chatContentbgc;
-					}
- 
-					.left::after {
-						position: absolute;
-						display: inline-block;
-						content: '';
-						width: 0;
-						height: 0;
-						top: 10px;
-						right: 100%;
-						border: 12rpx solid transparent;
-						border-right: 12rpx solid #FFFFFF;
-					}
- 
-					.content {
-						position: relative;
-						max-width: 486rpx;
-						border-radius: 8rpx;
-						word-wrap: break-word;
-						padding: 24rpx 24rpx;
-						margin: 0 24rpx;
-						border-radius: 5px;
-						font-size: 32rpx;
-						font-family: PingFang SC;
-						font-weight: 500;
-						color: #333333;
-						line-height: 42rpx;
-					}
- 
-					.avatar {
-						display: flex;
-						justify-content: center;
-						width: 78rpx;
-						height: 78rpx;
-						background: $sendBtnbgc;
-						border-radius: 50rpx;
-						overflow: hidden;
-						
-						image {
-							align-self: center;
-						}
- 
-					}
-				}
-			}
-		}
- 
-		/* 底部聊天发送栏 */
-		.chat-bottom {
-			width: 100%;
-			height: 100rpx;
-			background: #F4F5F7;
-			transition: all 0.1s ease;
-			
-			.send-msg {
-				display: flex;
-				align-items: flex-end;
-				padding: 16rpx 30rpx;
-				width: 100%;
-				min-height: 177rpx;
-				position: fixed;
-				bottom: 0;
-				background: #fff;
-				transition: all 0.1s ease;
-			}
- 
-			.uni-textarea {
-				padding-bottom: 70rpx;  
-				textarea {
-					width: 537rpx;
-					min-height: 75rpx;
-					max-height: 500rpx;
-					background: #f1f1f1;
-					border-radius: 40rpx;
-					font-size: 32rpx;
-					font-family: PingFang SC;
-					color: #333333;
-					line-height: 74rpx;
-					padding: 5rpx 8rpx;
-          text-indent: 30rpx;
-				}
-			}
-            
-			.send-btn {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-bottom: 76rpx;
-				margin-left: 25rpx;
-				width: 120rpx;
-				height: 75rpx;
-				background: #ed5a65;
-				border-radius: 50rpx;
-				font-size: 28rpx;
-				font-family: PingFang SC;
-				font-weight: 500;
-				color: #FFFFFF;
-				line-height: 28rpx;
-			}
-		}
-	}
-</style>
+<script setup lang="ts">
+import {ref, reactive, onMounted, onBeforeUnmount, nextTick} from 'vue'
+// import {fetchEventSource} from '@microsoft/fetch-event-source'
 
+// 生成随机用户ID（示例：8位字母数字组合）
+const generateUserId = () => {
+  return Math.random().toString(36).substr(2, 8);
+};
+
+// 持久化存储用户ID
+const userId = ref('');
+
+enum MessageStatus {
+  Streaming = 'streaming',
+  Complete = 'complete',
+  Error = 'error',
+}
+
+interface Message {
+  id: string
+  content: string
+  isBot: boolean
+  status?: MessageStatus
+  timestamp: number
+  retry?: () => Promise<void>
+}
+
+const messages = ref<Message[]>([])
+const inputMessage = ref('')
+const isLoading = ref(false)
+const controller = ref<AbortController>()
+const messageContainer = ref<HTMLElement>()
+const inputRef = ref<HTMLInputElement>()
+
+// 自动滚动控制
+let autoScroll = true
+let lastCharType: 'chinese' | 'english' | 'other' = 'other'
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (messageContainer.value && autoScroll) {
+      messageContainer.value.scrollTop = messageContainer.value.scrollHeight
+    }
+  })
+}
+
+const handleScroll = () => {
+  if (!messageContainer.value) return
+  const {scrollTop, scrollHeight, clientHeight} = messageContainer.value
+  autoScroll = scrollHeight - (scrollTop + clientHeight) < 50
+}
+
+// 字符类型检测
+const getCharType = (char: string): 'chinese' | 'english' | 'other' => {
+  if (/[\u4e00-\u9fa5\u3000-\u303F\uFF00-\uFFEF]/.test(char)) {
+    return 'chinese'
+  }
+  if (/[a-zA-Z]/.test(char)) {
+    return 'english'
+  }
+  return 'other'
+}
+
+// 智能空格处理核心逻辑
+const processContent = (prev: string, newData: string): string => {
+  if (prev.length === 0) return newData
+
+  const lastChar = prev.slice(-1)
+  const newFirstChar = newData[0] || ''
+
+  const prevType = getCharType(lastChar)
+  const newType = getCharType(newFirstChar)
+
+  let processed = newData
+
+  // 需要添加空格的情况
+  const shouldAddSpace =
+      (prevType === 'english' && newType === 'english') || // 英文接英文
+      (prevType === 'chinese' && newType === 'english') || // 中文接英文
+      (prevType === 'english' && newType === 'chinese' && !/[!?,.]$/.test(lastChar)) // 英文接中文（非标点结尾）
+
+  // 需要删除空格的情况
+  const shouldRemoveSpace =
+      (prevType === 'chinese' && newType === 'chinese') || // 中文接中文
+      (prevType === 'other' && /^[\u4e00-\u9fa5]/.test(newData)) // 特殊符号接中文
+
+  if (shouldAddSpace && !lastChar.match(/\s/) && !newFirstChar.match(/\s/)) {
+    processed = ' ' + processed
+  } else if (shouldRemoveSpace) {
+    processed = processed.replace(/^\s+/, '')
+  }
+
+  return processed
+}
+
+const sendChatRequest = async (content: string, botMessage: Message) => {
+  controller.value = new AbortController()
+
+  await fetchEventSource('http://localhost:8088/chat/stream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/event-stream',
+      'X-Content-Lang': 'zh-CN'
+    },
+    body: JSON.stringify({message: content,userId:userId.value}),
+    signal: controller.value?.signal,
+    openWhenHidden: true,
+
+    onopen: async response => {
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`)
+    },
+
+    onmessage: event => {
+      if (event.data === '[DONE]') {
+        botMessage.status = MessageStatus.Complete
+        return
+      }
+
+      const processedData = processContent(botMessage.content, event.data)
+      botMessage.content += processedData
+      botMessage.timestamp = Date.now()
+
+      // 更新最后字符类型
+      const lastChar = processedData.slice(-1)
+      lastCharType = getCharType(lastChar)
+
+      scrollToBottom()
+    },
+
+    onerror: err => {
+      throw err
+    }
+  })
+}
+
+// 错误处理
+const handleRequestError = (botMessage: Message, error: unknown) => {
+  const errorMessage = error instanceof Error
+      ? navigator.onLine
+          ? error.message
+          : '网络连接不可用'
+      : '请求发生未知错误'
+
+  botMessage.status = MessageStatus.Error
+  botMessage.content = errorMessage
+  botMessage.retry = createRetryHandler(botMessage.content)
+}
+
+// 主发送逻辑
+const sendMessage = async () => {
+  if (!inputMessage.value.trim() || isLoading.value) return
+
+  const userContent = inputMessage.value.trim()
+  inputMessage.value = ''
+
+  // 创建用户消息
+  const userMessage = reactive<Message>({
+    id: `user-${Date.now()}`,
+    content: userContent,
+    isBot: false,
+    timestamp: Date.now()
+  })
+  messages.value.push(userMessage)
+
+  // 创建机器人消息
+  const botMessage = reactive<Message>({
+    id: `bot-${Date.now()}`,
+    content: '',
+    isBot: true,
+    status: MessageStatus.Streaming,
+    timestamp: Date.now()
+  })
+  messages.value.push(botMessage)
+
+  isLoading.value = true
+
+  try {
+    await sendChatRequest(userContent, botMessage)
+  } catch (err) {
+    handleRequestError(botMessage, err)
+  } finally {
+    isLoading.value = false
+    nextTick(() => inputRef.value?.focus())
+  }
+}
+
+// 停止生成
+const stopGeneration = () => {
+  controller.value?.abort()
+  isLoading.value = false
+}
+
+// 生命周期
+onMounted(() => {
+  userId.value = localStorage.getItem('chatUserId') || generateUserId();
+  localStorage.setItem('chatUserId', userId.value);
+  messageContainer.value?.addEventListener('scroll', handleScroll)
+  inputRef.value?.focus()
+})
+
+onBeforeUnmount(() => {
+  messageContainer.value?.removeEventListener('scroll', handleScroll)
+  controller.value?.abort()
+})
+</script>
+
+<template>
+  <div class="chat-container">
+    <header class="app-header">
+      <div class="logo">
+        <svg viewBox="0 0 24 24">
+          <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+        </svg>
+        <h1>Spring AI 智能机器人</h1>
+      </div>
+    </header>
+
+    <div class="messages" ref="messageContainer">
+      <div
+          v-for="msg in messages"
+          :key="msg.id"
+          :class="[
+          'message',
+          msg.isBot ? 'bot' : 'user',
+          { streaming: msg.status === MessageStatus.Streaming }
+        ]"
+      >
+        <div class="avatar">
+          <svg v-if="msg.isBot" viewBox="0 0 24 24">
+            <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+          </svg>
+          <svg v-else viewBox="0 0 24 24">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </svg>
+        </div>
+
+        <div class="message-content">
+          <div class="meta">
+            <span class="sender">{{ msg.isBot ? 'Spring AI' : '我' }}</span>
+            <span class="time">{{ new Date(msg.timestamp).toLocaleTimeString() }}</span>
+          </div>
+          <div class="bubble">
+            <template v-if="msg.status === MessageStatus.Streaming">
+              <div class="typing-indicator">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </template>
+            <div class="text-content">{{ msg.content }}</div>
+            <div v-if="msg.status === MessageStatus.Error" class="error-actions">
+              <button @click="msg.retry?.()">重试</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrapper">
+        <input
+            ref="inputRef"
+            v-model="inputMessage"
+            @keyup.enter="sendMessage"
+            placeholder="输入消息..."
+            :disabled="isLoading"
+        />
+        <button
+            @click="sendMessage"
+            :disabled="isLoading"
+            class="send-button"
+        >
+          <span v-if="isLoading">发送中...</span>
+          <span v-else>发送</span>
+        </button>
+        <button
+            v-if="isLoading"
+            @click="stopGeneration"
+            class="stop-button"
+        >
+          停止
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f8fafc;
+}
+
+.app-header {
+  padding: 1rem;
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.logo svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+.logo h1 {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+.message {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.message.user {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message.user .avatar {
+  background: #bfdbfe;
+}
+
+.message-content {
+  max-width: 70%;
+  min-width: 200px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.bubble {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  line-height: 1.6;
+  position: relative;
+}
+
+.message.user .bubble {
+  background: #3b82f6;
+  color: white;
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.text-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #64748b;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-6px);
+  }
+}
+
+.input-area {
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 100%;
+}
+
+input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.send-button {
+  background: #3b82f6;
+  color: white;
+}
+
+.send-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.stop-button {
+  background: #ef4444;
+  color: white;
+}
+
+.error-actions {
+  margin-top: 0.5rem;
+}
+
+.error-actions button {
+  padding: 0.5rem 1rem;
+  background: #f8d7da;
+  color: #721c24;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    max-width: 100%;
+  }
+
+  .message-content {
+    max-width: 85%;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+</style>
