@@ -2,14 +2,9 @@
 const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
-  (_easycom_uni_icons2 + _easycom_uni_popup2)();
-}
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
-const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
-if (!Math) {
-  (_easycom_uni_icons + _easycom_uni_popup)();
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
+  const _component_uni_popup = common_vendor.resolveComponent("uni-popup");
+  (_component_uni_icons + _component_uni_popup)();
 }
 const _sfc_main = {
   __name: "comment-item",
@@ -25,16 +20,16 @@ const _sfc_main = {
     const essayId = common_vendor.ref("");
     const likeComment = (commentId, likes) => {
       if (likes) {
-        console.log(`取消点赞，评论ID: ${commentId}`);
+        common_vendor.index.__f__("log", "at components/comment-item/comment-item.vue:85", `取消点赞，评论ID: ${commentId}`);
         props.item.isCommentLikes = false;
         props.item.commentLikeCount -= 1;
       } else {
-        console.log(`点赞，评论ID: ${commentId}`);
+        common_vendor.index.__f__("log", "at components/comment-item/comment-item.vue:90", `点赞，评论ID: ${commentId}`);
         props.item.isCommentLikes = true;
         props.item.commentLikeCount += 1;
       }
       common_vendor.index.request({
-        url: "http://localhost:8080/likes/likes",
+        url: "http://148.100.78.168:3000/likes/likes",
         method: "POST",
         data: {
           "userId": common_vendor.index.getStorageSync("userId"),
@@ -49,7 +44,7 @@ const _sfc_main = {
           title: "未登录",
           icon: "error"
         });
-        console.log("未登录");
+        common_vendor.index.__f__("log", "at components/comment-item/comment-item.vue:114", "未登录");
       } else {
         let data = {
           content: content.value,
@@ -65,14 +60,14 @@ const _sfc_main = {
         common_vendor.index.showToast({
           title: "发布评论成功！"
         });
-        console.log(res);
+        common_vendor.index.__f__("log", "at components/comment-item/comment-item.vue:131", res);
         content.value = "";
         commentPopup.value.close();
         location.reload();
       }
     };
     const toReply = (a, b, c, d) => {
-      console.log(a);
+      common_vendor.index.__f__("log", "at components/comment-item/comment-item.vue:140", a);
       setFocus.value = true;
       commentPopup.value.open();
       toCommentId.value = a;
@@ -147,3 +142,4 @@ const _sfc_main = {
 };
 const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-c7df51b2"]]);
 wx.createComponent(Component);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/components/comment-item/comment-item.js.map

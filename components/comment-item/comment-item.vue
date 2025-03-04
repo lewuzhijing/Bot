@@ -93,7 +93,7 @@ const likeComment=(commentId,likes)=>{
 			props.item.commentLikeCount+=1;
 	    }
 		uni.request({
-			url:"http://localhost:8080/likes/likes",
+			url:"http://148.100.78.168:3000/likes/likes",
 			method:"POST",
 			data:{
 				 "userId":uni.getStorageSync("userId"),

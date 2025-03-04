@@ -2,12 +2,8 @@
 const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  _easycom_uni_icons2();
-}
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
-if (!Math) {
-  _easycom_uni_icons();
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
+  _component_uni_icons();
 }
 const _sfc_main = {
   __name: "user",
@@ -21,7 +17,7 @@ const _sfc_main = {
     });
     const login = common_vendor.ref(false);
     const toInfo = (key) => {
-      console.log(111111);
+      common_vendor.index.__f__("log", "at pages/user/user.vue:71", 111111);
       common_vendor.index.navigateTo({
         url: "/pages/user/userInfo?key=" + key
       });
@@ -40,21 +36,21 @@ const _sfc_main = {
           url: "/pages/login/login"
         });
       } else {
-        console.log(common_vendor.index.getStorageSync("userId"));
+        common_vendor.index.__f__("log", "at pages/user/user.vue:96", common_vendor.index.getStorageSync("userId"));
         return;
       }
     }
     common_vendor.onShow(async () => {
       const userId = common_vendor.index.getStorageSync("userId");
-      console.log("获取到的 userId:", userId);
+      common_vendor.index.__f__("log", "at pages/user/user.vue:106", "获取到的 userId:", userId);
       if (userId != null && userId != "") {
         login.value = true;
         let res = await api_apis.apiGetUser(userId);
-        console.log(res.data);
+        common_vendor.index.__f__("log", "at pages/user/user.vue:112", res.data);
         user.value = res.data;
         common_vendor.index.setStorageSync("userImg", user.value.userImg);
         common_vendor.index.setStorageSync("userName", user.value.userName);
-        console.log(user.value);
+        common_vendor.index.__f__("log", "at pages/user/user.vue:117", user.value);
       } else {
         common_vendor.index.navigateTo({
           url: "/pages/login/login"
@@ -113,3 +109,4 @@ const _sfc_main = {
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-0f7520f0"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/user/user.js.map

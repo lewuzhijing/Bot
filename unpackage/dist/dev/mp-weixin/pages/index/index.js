@@ -3,23 +3,19 @@ const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
   const _easycom_custom_nav_bar2 = common_vendor.resolveComponent("custom-nav-bar");
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
   const _easycom_custom_refresher2 = common_vendor.resolveComponent("custom-refresher");
   const _easycom_custom_nomore2 = common_vendor.resolveComponent("custom-nomore");
-  const _easycom_uni_list_item2 = common_vendor.resolveComponent("uni-list-item");
-  const _easycom_uni_list2 = common_vendor.resolveComponent("uni-list");
-  const _easycom_z_paging2 = common_vendor.resolveComponent("z-paging");
-  (_easycom_custom_nav_bar2 + _easycom_uni_icons2 + _easycom_custom_refresher2 + _easycom_custom_nomore2 + _easycom_uni_list_item2 + _easycom_uni_list2 + _easycom_z_paging2)();
+  const _component_uni_list_item = common_vendor.resolveComponent("uni-list-item");
+  const _component_uni_list = common_vendor.resolveComponent("uni-list");
+  const _component_z_paging = common_vendor.resolveComponent("z-paging");
+  (_easycom_custom_nav_bar2 + _component_uni_icons + _easycom_custom_refresher2 + _easycom_custom_nomore2 + _component_uni_list_item + _component_uni_list + _component_z_paging)();
 }
 const _easycom_custom_nav_bar = () => "../../components/custom-nav-bar/custom-nav-bar.js";
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
 const _easycom_custom_refresher = () => "../../components/custom-refresher/custom-refresher.js";
 const _easycom_custom_nomore = () => "../../components/custom-nomore/custom-nomore.js";
-const _easycom_uni_list_item = () => "../../uni_modules/uni-list/components/uni-list-item/uni-list-item.js";
-const _easycom_uni_list = () => "../../uni_modules/uni-list/components/uni-list/uni-list.js";
-const _easycom_z_paging = () => "../../uni_modules/z-paging/components/z-paging/z-paging.js";
 if (!Math) {
-  (_easycom_custom_nav_bar + _easycom_uni_icons + _easycom_custom_refresher + _easycom_custom_nomore + _easycom_uni_list_item + _easycom_uni_list + _easycom_z_paging)();
+  (_easycom_custom_nav_bar + _easycom_custom_refresher + _easycom_custom_nomore)();
 }
 const _sfc_main = {
   __name: "index",
@@ -121,3 +117,4 @@ const _sfc_main = {
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/index/index.js.map

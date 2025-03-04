@@ -2,7 +2,14 @@
   "hash": "634a53c4",
   "configHash": "48fd0f13",
   "lockfileHash": "cadc8ff3",
-  "browserHash": "e631f2b6",
-  "optimized": {},
+  "browserHash": "a0ae81b8",
+  "optimized": {
+    "@microsoft/fetch-event-source": {
+      "src": "../../../../../node_modules/@microsoft/fetch-event-source/lib/esm/index.js",
+      "file": "@microsoft_fetch-event-source.js",
+      "fileHash": "7aff625b",
+      "needsInterop": false
+    }
+  },
   "chunks": {}
 }

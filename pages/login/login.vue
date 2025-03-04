@@ -73,7 +73,7 @@ const isFormComplete = computed(() => {
 
 const toLogin=()=>{
 	uni.request({
-		url:"http://localhost:8080/user/login",
+		url:"http://148.100.78.168:3000/user/login",
 			method:"POST",
 			data:{
 				"userId":formData.value.user,

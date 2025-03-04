@@ -4,9 +4,6 @@
   "usingComponents": {
     "custom-nav-bar": "../../components/custom-nav-bar/custom-nav-bar",
     "custom-refresher": "../../components/custom-refresher/custom-refresher",
-    "custom-nomore": "../../components/custom-nomore/custom-nomore",
-    "uni-list-item": "../../uni_modules/uni-list/components/uni-list-item/uni-list-item",
-    "uni-list": "../../uni_modules/uni-list/components/uni-list/uni-list",
-    "z-paging": "../../uni_modules/z-paging/components/z-paging/z-paging"
+    "custom-nomore": "../../components/custom-nomore/custom-nomore"
   }
 }

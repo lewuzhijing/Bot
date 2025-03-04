@@ -2,22 +2,13 @@
 const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
-  const _easycom_uni_search_bar2 = common_vendor.resolveComponent("uni-search-bar");
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  const _easycom_uv_empty2 = common_vendor.resolveComponent("uv-empty");
-  const _easycom_uni_list_item2 = common_vendor.resolveComponent("uni-list-item");
-  const _easycom_uni_list2 = common_vendor.resolveComponent("uni-list");
-  const _easycom_uni_load_more2 = common_vendor.resolveComponent("uni-load-more");
-  (_easycom_uni_search_bar2 + _easycom_uni_icons2 + _easycom_uv_empty2 + _easycom_uni_list_item2 + _easycom_uni_list2 + _easycom_uni_load_more2)();
-}
-const _easycom_uni_search_bar = () => "../../uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.js";
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
-const _easycom_uv_empty = () => "../../uni_modules/uv-empty/components/uv-empty/uv-empty.js";
-const _easycom_uni_list_item = () => "../../uni_modules/uni-list/components/uni-list-item/uni-list-item.js";
-const _easycom_uni_list = () => "../../uni_modules/uni-list/components/uni-list/uni-list.js";
-const _easycom_uni_load_more = () => "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more.js";
-if (!Math) {
-  (_easycom_uni_search_bar + _easycom_uni_icons + _easycom_uv_empty + _easycom_uni_list_item + _easycom_uni_list + _easycom_uni_load_more)();
+  const _component_uni_search_bar = common_vendor.resolveComponent("uni-search-bar");
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
+  const _component_uv_empty = common_vendor.resolveComponent("uv-empty");
+  const _component_uni_list_item = common_vendor.resolveComponent("uni-list-item");
+  const _component_uni_list = common_vendor.resolveComponent("uni-list");
+  const _component_uni_load_more = common_vendor.resolveComponent("uni-load-more");
+  (_component_uni_search_bar + _component_uni_icons + _component_uv_empty + _component_uni_list_item + _component_uni_list + _component_uni_load_more)();
 }
 const _sfc_main = {
   __name: "search",
@@ -42,7 +33,7 @@ const _sfc_main = {
       historySearch.value = [.../* @__PURE__ */ new Set([queryParams.value.keyword, ...historySearch.value])].slice(0, 10);
       initParams(queryParams.value.keyword);
       searchData();
-      console.log(queryParams.value.keyword);
+      common_vendor.index.__f__("log", "at pages/search/search.vue:136", queryParams.value.keyword);
     };
     const onClear = () => {
       initParams();
@@ -67,13 +58,13 @@ const _sfc_main = {
         let res = await api_apis.apiQueryList(queryParams.value.pageNum, queryParams.value.keyword);
         classList.value = [...classList.value, ...res.list];
         if (queryParams.value.pageSize > res.list.length) {
-          console.log(queryParams.value.pageSize);
+          common_vendor.index.__f__("log", "at pages/search/search.vue:173", queryParams.value.pageSize);
           noData.value = true;
-          console.log(noData.value);
+          common_vendor.index.__f__("log", "at pages/search/search.vue:175", noData.value);
         }
         if (res.list.length == 0 && classList.value.length == 0)
           noSearch.value = true;
-        console.log(res);
+        common_vendor.index.__f__("log", "at pages/search/search.vue:178", res);
       } finally {
         common_vendor.index.hideLoading();
       }
@@ -90,7 +81,7 @@ const _sfc_main = {
     };
     common_vendor.onReachBottom(() => {
       if (noData.value) {
-        console.log("没有更多数据");
+        common_vendor.index.__f__("log", "at pages/search/search.vue:200", "没有更多数据");
         return;
       }
       queryParams.value.pageNum++;
@@ -184,3 +175,4 @@ const _sfc_main = {
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-c10c040c"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/search/search.js.map

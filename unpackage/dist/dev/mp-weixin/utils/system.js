@@ -12,3 +12,4 @@ const getTitleBarHeight = () => {
 };
 exports.getStatusBarHeight = getStatusBarHeight;
 exports.getTitleBarHeight = getTitleBarHeight;
+//# sourceMappingURL=../../.sourcemap/mp-weixin/utils/system.js.map

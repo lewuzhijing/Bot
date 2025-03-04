@@ -61,3 +61,4 @@ exports.apiIsToEssayLikes = apiIsToEssayLikes;
 exports.apiLikesEssay = apiLikesEssay;
 exports.apiQueryHandUpList = apiQueryHandUpList;
 exports.apiQueryList = apiQueryList;
+//# sourceMappingURL=../../.sourcemap/mp-weixin/api/apis.js.map

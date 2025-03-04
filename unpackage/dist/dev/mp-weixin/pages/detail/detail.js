@@ -3,16 +3,14 @@ const common_vendor = require("../../common/vendor.js");
 const utils_system = require("../../utils/system.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
   const _easycom_comment_item2 = common_vendor.resolveComponent("comment-item");
-  const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
-  (_easycom_uni_icons2 + _easycom_comment_item2 + _easycom_uni_popup2)();
+  const _component_uni_popup = common_vendor.resolveComponent("uni-popup");
+  (_component_uni_icons + _easycom_comment_item2 + _component_uni_popup)();
 }
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
 const _easycom_comment_item = () => "../../components/comment-item/comment-item.js";
-const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
 if (!Math) {
-  (_easycom_uni_icons + _easycom_comment_item + _easycom_uni_popup)();
+  _easycom_comment_item();
 }
 const _sfc_main = {
   __name: "detail",
@@ -36,15 +34,15 @@ const _sfc_main = {
     const likes = common_vendor.ref();
     const likeEssay = async (esssayId) => {
       if (common_vendor.index.getStorageSync("userId") != null && common_vendor.index.getStorageSync("userId") != "") {
-        console.log(likes.value);
+        common_vendor.index.__f__("log", "at pages/detail/detail.vue:105", likes.value);
         if (likes.value) {
-          console.log(`取消点赞，`);
+          common_vendor.index.__f__("log", "at pages/detail/detail.vue:107", `取消点赞，`);
           likes.value = false;
           essay.value.essayLikes -= 1;
         } else {
-          console.log(`点赞`);
+          common_vendor.index.__f__("log", "at pages/detail/detail.vue:113", `点赞`);
           essay.value.essayLikes = 1 + essay.value.essayLikes;
-          console.log(essay.value.essayLikes);
+          common_vendor.index.__f__("log", "at pages/detail/detail.vue:115", essay.value.essayLikes);
           likes.value = true;
         }
         let data = {
@@ -61,7 +59,7 @@ const _sfc_main = {
       }
     };
     const handComment = () => {
-      console.log("评论");
+      common_vendor.index.__f__("log", "at pages/detail/detail.vue:137", "评论");
       setFocus.value = true;
       commentPopup.value.open();
     };
@@ -71,7 +69,7 @@ const _sfc_main = {
           title: "未登录",
           icon: "error"
         });
-        console.log("未登录");
+        common_vendor.index.__f__("log", "at pages/detail/detail.vue:150", "未登录");
       } else {
         let data = {
           content: content.value,
@@ -84,7 +82,7 @@ const _sfc_main = {
         common_vendor.index.showToast({
           title: "发布评论成功！"
         });
-        console.log(res);
+        common_vendor.index.__f__("log", "at pages/detail/detail.vue:165", res);
         content.value = "";
         commentPopup.value.close();
         let commentRes = await api_apis.apiGetComment(essay.value.essayId, 1);
@@ -97,7 +95,7 @@ const _sfc_main = {
       });
     };
     common_vendor.onLoad(async (e) => {
-      console.log("跳转文章id", e.essayId);
+      common_vendor.index.__f__("log", "at pages/detail/detail.vue:187", "跳转文章id", e.essayId);
       essay.value.essayId = e.essayId;
       let essayRes = await api_apis.apiGetEssay(e.essayId);
       essay.value = essayRes.data;
@@ -178,3 +176,4 @@ const _sfc_main = {
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-eca06f3c"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/detail/detail.js.map

@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
-const BASE_URL = "http://localhost:8080/";
+const BASE_URL = "http://148.100.78.168:3000/";
 function request(config = {}) {
   let {
     url,
@@ -25,3 +25,4 @@ function request(config = {}) {
   });
 }
 exports.request = request;
+//# sourceMappingURL=../../.sourcemap/mp-weixin/utils/request.js.map

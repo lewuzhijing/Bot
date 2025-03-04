@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://localhost:8080/';
+const BASE_URL = 'http://148.100.78.168:3000/';
 
 export function request(config={}){	
 	let {

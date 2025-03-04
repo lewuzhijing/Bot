@@ -1,16 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 if (!Array) {
-  const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
-  const _easycom_uni_popup_message2 = common_vendor.resolveComponent("uni-popup-message");
-  const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
-  (_easycom_uni_icons2 + _easycom_uni_popup_message2 + _easycom_uni_popup2)();
-}
-const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
-const _easycom_uni_popup_message = () => "../../uni_modules/uni-popup/components/uni-popup-message/uni-popup-message.js";
-const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
-if (!Math) {
-  (_easycom_uni_icons + _easycom_uni_popup_message + _easycom_uni_popup)();
+  const _component_uni_icons = common_vendor.resolveComponent("uni-icons");
+  const _component_uni_popup_message = common_vendor.resolveComponent("uni-popup-message");
+  const _component_uni_popup = common_vendor.resolveComponent("uni-popup");
+  (_component_uni_icons + _component_uni_popup_message + _component_uni_popup)();
 }
 const _sfc_main = {
   __name: "add",
@@ -33,49 +27,49 @@ const _sfc_main = {
       return result;
     }
     const upImage = () => {
-      console.log("选择图片");
+      common_vendor.index.__f__("log", "at pages/add/add.vue:92", "选择图片");
       const essayId = generateRandomId(7);
-      console.log("文章id" + essayId);
+      common_vendor.index.__f__("log", "at pages/add/add.vue:94", "文章id" + essayId);
       common_vendor.index.chooseImage({
         count: 9 - imglist.value.length,
         sizeType: ["compressed"],
         sourceType: ["album", "camera"],
         success: (res) => {
           imglist.value = imglist.value.concat(res.tempFilePaths);
-          console.log("当前图片列表:", imglist.value);
+          common_vendor.index.__f__("log", "at pages/add/add.vue:101", "当前图片列表:", imglist.value);
         },
         fail: (err) => {
-          console.error("图片选择失败", err);
+          common_vendor.index.__f__("error", "at pages/add/add.vue:104", "图片选择失败", err);
         }
       });
     };
     const toAdd = async () => {
-      console.log("开始上传图片和附加参数");
+      common_vendor.index.__f__("log", "at pages/add/add.vue:112", "开始上传图片和附加参数");
       const essayId = generateRandomId(7);
-      console.log("文章id", essayId);
+      common_vendor.index.__f__("log", "at pages/add/add.vue:114", "文章id", essayId);
       let imgulr = "";
       const uploadPromises = imglist.value.map((item, index) => {
         return new Promise((resolve, reject) => {
           common_vendor.index.uploadFile({
-            url: "http://localhost:8080/essay/uploadImg",
+            url: "http://148.100.78.168:3000/essay/uploadImg",
             // 上传图片的接口
             filePath: item,
             // 图片路径
             name: "essayImgs",
             // 上传字段名
             success: (uploadFileRes) => {
-              console.log(uploadFileRes.data, "=》》》》");
+              common_vendor.index.__f__("log", "at pages/add/add.vue:125", uploadFileRes.data, "=》》》》");
               try {
                 let imgData = JSON.parse(uploadFileRes.data);
                 imgulr += imgData.data + ",";
-                console.log("imgulr:", imgulr);
+                common_vendor.index.__f__("log", "at pages/add/add.vue:129", "imgulr:", imgulr);
                 resolve();
               } catch (error) {
                 reject("图片上传失败");
               }
             },
             fail: (error) => {
-              console.error("图片上传失败,因为内容过大,", error);
+              common_vendor.index.__f__("error", "at pages/add/add.vue:136", "图片上传失败,因为内容过大,", error);
               reject("图片上传失败");
             }
           });
@@ -84,7 +78,7 @@ const _sfc_main = {
       try {
         await Promise.all(uploadPromises);
         common_vendor.index.request({
-          url: "http://localhost:8080/essay/add",
+          url: "http://148.100.78.168:3000/essay/add",
           // 后端添加文章接口
           method: "POST",
           data: {
@@ -96,7 +90,7 @@ const _sfc_main = {
             "essayAuthorName": common_vendor.index.getStorageSync("userName")
           },
           success: (res) => {
-            console.log("文章添加成功", res);
+            common_vendor.index.__f__("log", "at pages/add/add.vue:160", "文章添加成功", res);
             common_vendor.index.showToast({
               title: "文章发布成功！"
             });
@@ -108,7 +102,7 @@ const _sfc_main = {
             });
           },
           fail: (err) => {
-            console.log("文章添加失败", err);
+            common_vendor.index.__f__("log", "at pages/add/add.vue:173", "文章添加失败", err);
             common_vendor.index.showToast({
               title: "文章发布失败",
               icon: "error"
@@ -116,7 +110,7 @@ const _sfc_main = {
           }
         });
       } catch (error) {
-        console.error("图片上传失败", error);
+        common_vendor.index.__f__("error", "at pages/add/add.vue:181", "图片上传失败", error);
         common_vendor.index.showToast({
           title: "图片上传失败，请重试",
           icon: "none"
@@ -160,3 +154,4 @@ const _sfc_main = {
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-e8d2fd40"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/add/add.js.map
