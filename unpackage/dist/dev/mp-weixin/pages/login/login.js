@@ -23,7 +23,7 @@ const _sfc_main = {
     });
     const toLogin = () => {
       common_vendor.index.request({
-        url: "http://148.100.78.168:3000/user/login",
+        url: "http://112.124.63.215:3000/user/login",
         method: "POST",
         data: {
           "userId": formData.value.user,

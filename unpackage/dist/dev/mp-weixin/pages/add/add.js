@@ -51,7 +51,7 @@ const _sfc_main = {
       const uploadPromises = imglist.value.map((item, index) => {
         return new Promise((resolve, reject) => {
           common_vendor.index.uploadFile({
-            url: "http://148.100.78.168:3000/essay/uploadImg",
+            url: "http://148.100.78.168:http://112.124.63.215:3000/essay/uploadImg",
             // 上传图片的接口
             filePath: item,
             // 图片路径
@@ -78,7 +78,7 @@ const _sfc_main = {
       try {
         await Promise.all(uploadPromises);
         common_vendor.index.request({
-          url: "http://148.100.78.168:3000/essay/add",
+          url: "http://148.100.78.168:http://112.124.63.215:3000/essay/add",
           // 后端添加文章接口
           method: "POST",
           data: {

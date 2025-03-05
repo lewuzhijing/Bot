@@ -1,7 +1,8 @@
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { fetchEventSource } from '@microsoft/fetch-event-source'
+// import { fetchEventSource } from '@microsoft/fetch-event-source'
 import{onShow} from"@dcloudio/uni-app"
+import { connectWebSocket, sendMessageAPI, disconnectWebSocket } from '@/utils/websocket.js'; 
 // import axios from 'axios';
 // 生成随机用户ID（示例：8位字母数字组合）
 const generateUserId = () => {
@@ -29,6 +30,7 @@ const inputRef = ref(null);
 let autoScroll = true;
 let lastCharType = 'other';
  
+	
 const scrollToBottom = () => {
   nextTick(() => {
     if (messageContainer.value  && autoScroll) {
@@ -45,13 +47,33 @@ const handleScroll = () => {
  
 // 字符类型检测
 const getCharType = (char) => {
-  if (/[\u4e00-\u9fa5\u3000-\u303F\uFF00-\uFFEF]/.test(char)) {
-    return 'chinese';
-  }
-  if (/[a-zA-Z]/.test(char)) {
-    return 'english';
-  }
-  return 'other';
+    // 中文字符（包括汉字、标点符号和全角字符）
+    if (/[\u4e00-\u9fa5\u3000-\u303F\uFF00-\uFFEF]/.test(char)) {
+        return 'chinese';
+    }
+ 
+    // 英文字母
+    if (/[a-zA-Z]/.test(char)) {
+        return 'english';
+    }
+ 
+    // 日文字符（平假名和片假名）
+    if (/[\u3040-\u309F\u30A0-\u30FF]/.test(char)) {
+        return 'japanese';
+    }
+ 
+    // 韩文字符
+    if (/[\uAC00-\uD7AF]/.test(char)) {
+        return 'korean';
+    }
+ 
+    // 表情符号
+    if (/[\uD83C-\uDBFF\uDC00-\uDFFF]/.test(char)) {
+        return 'emoji';
+    }
+ 
+    // 其他字符 
+    return 'other';
 };
  
 // 智能空格处理核心逻辑
@@ -86,52 +108,81 @@ const processContent = (prev, newData) => {
   return processed;
 };
  
-const sendChatRequest = async (content, botMessage) => {
-  controller.value  = new AbortController();
- // const fetchEventSource = await import('@microsoft/fetch-event-source');
-  await fetchEventSource('http://148.100.78.168:3000/chat/stream',  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'text/event-stream',
-      'X-Content-Lang': 'zh-CN'
-    },
-    body: JSON.stringify({  message: content, userId: userId.value,  chatId: chatId.value }),
-    signal: controller.value.signal, 
-    openWhenHidden: true,
+	 
+ const sendChatRequest=async(content, botMessage)=>{
+	 
+	 const onmessage=(event)=>{
+	 	// console.log(data)
+	 	      if (event.data  === '[DONE]') {
+	 	        botMessage.status  = MessageStatus.Complete;
+				console.log('[done]')
+	 	        return;
+	 			}
+	 			      const processedData = processContent(botMessage.content,  event.data);
+					  console.log('processedData',processedData)
+	 			      botMessage.content  += event.data;
+	 			      botMessage.timestamp  = Date.now(); 
+	 			 
+	 			      // 更新最后字符类型
+	 			      const lastChar = processedData.slice(-1); 
+	 			      lastCharType = getCharType(lastChar);
+	 			 
+	 			      scrollToBottom();
+	 }
+	 await connectWebSocket(onmessage)
+	 	 
+	 setTimeout(()=>{
+		 sendMessageAPI(JSON.stringify({  message: content, userId: userId.value,  chatId: chatId.value }))
+	 },1000)
+	 
+ }
  
-    onopen: async response => {
-      // if (!response.ok)  throw new Error(`HTTP error ${response.status}`) 
-    },
+// const sendChatRequest = async (content, botMessage) => {
+//   controller.value  = new AbortController();
+//  // const fetchEventSource = await import('@microsoft/fetch-event-source');
+//   await fetchEventSource('http://112.124.63.215:3000/chat/stream',  {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Accept': 'text/event-stream',
+//       'X-Content-Lang': 'zh-CN'
+//     },
+//     body: JSON.stringify({  message: content, userId: userId.value,  chatId: chatId.value }),
+//     signal: controller.value.signal, 
+//     openWhenHidden: true,
  
-    onmessage: event => {
-      if (event.data  === '[DONE]') {
-        botMessage.status  = MessageStatus.Complete;
-        return;
-      }
+//     onopen: async response => {
+//       // if (!response.ok)  throw new Error(`HTTP error ${response.status}`) 
+//     },
  
-      const processedData = processContent(botMessage.content,  event.data); 
-      botMessage.content  += processedData;
-      botMessage.timestamp  = Date.now(); 
+//     onmessage: event => {
+//       if (event.data  === '[DONE]') {
+//         botMessage.status  = MessageStatus.Complete;
+//         return;
+//       }
  
-      // 更新最后字符类型
-      const lastChar = processedData.slice(-1); 
-      lastCharType = getCharType(lastChar);
+//       const processedData = processContent(botMessage.content,  event.data); 
+//       botMessage.content  += processedData;
+//       botMessage.timestamp  = Date.now(); 
  
-      scrollToBottom();
-    },
+//       // 更新最后字符类型
+//       const lastChar = processedData.slice(-1); 
+//       lastCharType = getCharType(lastChar);
  
-    onerror: err => {
-      throw err;
-    }
-  });
-};
+//       scrollToBottom();
+//     },
+ 
+//     onerror: err => {
+//       throw err;
+//     }
+//   });
+// };
  
  
  // const sendChatRequest = (content, botMessage) => {
  //   // 创建 wx.request  请求任务
  //   const requestTask = wx.request({ 
- //     url: 'http://148.100.78.168:3000/chat/stream',
+ //     url: 'http://112.124.63.215:3000/chat/stream',
  //     method: 'POST',
  //     data: {
  //       message: content,
@@ -170,48 +221,6 @@ const sendChatRequest = async (content, botMessage) => {
  //   };
  // };
   
- // // 处理 SSE 数据
- // const handleSSEData = (data, botMessage) => {
- //   let buffer = ''; // 缓冲区
-  
- //   data.split('\n').forEach((line)  => {
- //     buffer += line;
-  
- //     // 如果遇到空行，表示一条完整消息结束
- //     if (line.trim()  === '') {
- //       const lines = buffer.split('\n').filter((l)  => l.trim()  !== '');
- //       buffer = ''; // 清空缓冲区
-  
- //       for (const l of lines) {
- //         if (l.startsWith('data:'))  {
- //           const eventData = l.slice(5).trim();  // 提取数据部分
-  
- //           if (eventData === '[DONE]') {
- //             botMessage.status  = MessageStatus.Complete;
- //             return;
- //           }
-  
- //           const processedData = processContent(botMessage.content,  eventData);
- //           botMessage.content  += processedData;
- //           botMessage.timestamp  = Date.now(); 
-  
- //           const lastChar = processedData.slice(-1); 
- //           lastCharType = getCharType(lastChar);
-  
- //           scrollToBottom();
- //         }
- //       }
- //     }
- //   });
-  
- //   // 如果缓冲区中还有未处理的数据，保留到下次处理 
- //   if (buffer && !buffer.endsWith('\n'))  {
- //     console.log('Incomplete  data in buffer:', buffer);
- //   }
- // };
- 
- 
-
 // 错误处理
 const handleRequestError = (botMessage, error) => {
   const errorMessage = error instanceof Error
@@ -239,8 +248,7 @@ const sendMessage = async () => {
     timestamp: Date.now() 
   });
   messages.value.push(userMessage); 
- 
-  // 创建机器人消息
+   // 创建机器人消息
   const botMessage = reactive({
     id: `bot-${Date.now()}`, 
     content: '',
@@ -276,7 +284,7 @@ const fetchHistoryMessages = () => {
 	
     // 使用uni.request 发送GET请求到后端接口 
         uni.request({ 
-            url: 'http://148.100.78.168:3000/chat/getMessage', // 后端接口地址
+            url: 'http://112.124.63.215:3000/chat/getMessage', // 后端接口地址
             method: 'GET',
             data: {
                 chatId: chatId.value||"test1"// 查询参数

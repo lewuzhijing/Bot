@@ -118,7 +118,7 @@ const toAdd = async () => {
     const uploadPromises = imglist.value.map((item, index) => {
         return new Promise((resolve, reject) => {
             uni.uploadFile({
-                url: "http://148.100.78.168:3000/essay/uploadImg", // 上传图片的接口
+                url: "http://148.100.78.168:http://112.124.63.215:3000/essay/uploadImg", // 上传图片的接口
                 filePath: item, // 图片路径
                 name: "essayImgs", // 上传字段名
                 success: (uploadFileRes) => {
@@ -146,7 +146,7 @@ const toAdd = async () => {
 
         // 所有图片上传完成后发送请求
         uni.request({
-            url: "http://148.100.78.168:3000/essay/add", // 后端添加文章接口
+            url: "http://148.100.78.168:http://112.124.63.215:3000/essay/add", // 后端添加文章接口
             method: "POST",
             data: {
                 "essayAuthorId": uni.getStorageSync('userId'),

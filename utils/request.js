@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://148.100.78.168:3000/';
+const BASE_URL = 'http://112.124.63.215:3000/';
 
 export function request(config={}){	
 	let {

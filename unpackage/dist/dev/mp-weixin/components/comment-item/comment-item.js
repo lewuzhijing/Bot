@@ -29,7 +29,7 @@ const _sfc_main = {
         props.item.commentLikeCount += 1;
       }
       common_vendor.index.request({
-        url: "http://148.100.78.168:3000/likes/likes",
+        url: "http://112.124.63.215:3000/likes/likes",
         method: "POST",
         data: {
           "userId": common_vendor.index.getStorageSync("userId"),
